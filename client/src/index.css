@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+
+@theme{
+  --spacing: 1px;
+}
+col{
+  color: rgb(240, 23, 23);
+}
