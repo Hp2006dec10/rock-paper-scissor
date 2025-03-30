@@ -90,11 +90,8 @@ const GamePage = () => {
     const [gameEnd, setGameEnd] = useState(null);
     const [inputHistory, storeInput] = useState([]);
 
-    // useEffect(()=>{if (scoreHistory.length > 0) console.log(JSON.stringify(scoreHistory))},[scoreHistory]);
-    // useEffect(()=>{if(gameStart!= null) console.log("Game started at: ",gameStart)},[gameStart]
 
     useEffect(()=>{
-        if (humanInput!= null && computerInput != null) console.log(humanInput + ", "+ computerInput);
         if (humanInput != computerInput){
             if (computerInput == "Scissor" && humanInput == "Rock" || 
                 computerInput == "Rock"  && humanInput == "Paper"|| 
