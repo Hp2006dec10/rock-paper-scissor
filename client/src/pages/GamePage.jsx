@@ -163,7 +163,7 @@ const GamePage = () => {
     }
 
     const handleHumanInput = (data) => {
-        setMessage("Waiting for computer input");
+        setMessage("Waiting for computer input...");
         setHuman(arr[data]);
         changeInpInd(0);
         setComputerStart(true);
@@ -197,13 +197,16 @@ const GamePage = () => {
     const handleForceExit = () => {checkExit(true);endGame(true)};
     return (
     <>
-   <div className={`bg-gradient-to-r from-[rgb(156,57,131)] from-20% via-[rgb(140,30,130)] via-50% to-[rgb(100,20,120)] via-70%  h-screen w-screen ${gameOver ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}>
+   <div className={`bg-gradient-to-r from-[rgb(195,84,167)] from-20% via-[rgb(140,30,130)] via-50% to-[rgb(136,48,158)] via-70%  h-screen w-screen ${gameOver ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}>
         <div className='text-[75px] text-white text-center pt-20'>ROCK PAPER SCISSOR</div>
         <ScoreBoard hScore={humanScore} cScore={computerScore}/>
         <div className="h-75 w-200 bg-black -outline-offset-10 outline-3 outline-white m-20 flex items-center justify-center text-3xl text-white cursor-pointer absolute top-50 left-50" onClick={handleForceExit}>Back</div>
         <div className="flex justify-evenly mt-50">
             <ComputerBoard values={arr} doesStart={computerStart} current={currInpInd}/>
-            <div className={`flex ${1} text-[50px] text-red-600 w-300 h-300 items-center text-center justify-center`}>{message}</div>
+            <div>
+                <div className="flex text-[35px] text-[rgb(141,255,179)] w-400 h-100 items-center text-center justify-center">First to 10 points will win</div>
+            <div className="flex text-[50px] text-[rgb(254,245,151)] w-400 h-200 items-center text-center justify-center -mt-30">{message}</div>
+            </div>
             <HumanBoard humanInput={humanInput}/>
         </div>
         <ChoiceBox handleClick={handleHumanInput} shouldDisable={computerStart}/>
