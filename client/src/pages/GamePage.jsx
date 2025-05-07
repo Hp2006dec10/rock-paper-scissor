@@ -213,7 +213,7 @@ const GamePage = () => {
         <ChoiceBox handleClick={handleHumanInput} shouldDisable={computerStart}/>
         <div className="w-fit h-fit px-[5%] py-[3%] md:py-[1%] bg-black -outline-offset-10 outline-3 outline-white text-center text-xl md:text-3xl text-white cursor-pointer relative left-[67.5%] md:left-[75%] lg:left-[80%] my-[2%]" onClick={handleForceExit}>Back</div>
     </div>
-    {gameOver && <GameOver winner={winner} handleExit={handleExit} handleRestart={handleRestart}/>}
+    {gameOver && <GameOver winner={winner} handleExit={handleForceExit} handleRestart={handleRestart}/>}
     {forceExit && <Back handleExit={handleExit} checkExit={checkExit} endGame={endGame}/>}
     </>
     )
