@@ -64,26 +64,26 @@ const LoginPage = () => {
 
     return (
         <div className="flex h-screen w-screen justify-center items-center">
-            <div className={`bg-gradient-to-r from-blue-600 from-10% via-blue-500 via-30% to-blue-400 to-90% h-fit ${message ? "py-50":"py-100"} rounded-[40px]`}>
-                {message && <p className="text-2xl justify-self-center my-50 p-10 bg-gray-200 text-green-600 rounded-[10px]">✅Login successful...redirecting to home page</p>}
-                <div className="text-2xl text-center">
-                    <form className={`flex flex-col w-fit gap-40 text-xl text-white px-50`} onSubmit={handleSubmit}>
-                        <p className="justify-self-center text-3xl">LOGIN</p>
+            <div className={`bg-gradient-to-r from-blue-600 from-10% via-blue-500 via-30% to-blue-400 to-90% h-fit w-[80%] md:w-[60%] lg:w-[52.5%] rounded-[5%] py-[5%] px-[2%]`}>
+                {message && <p className="text-[1rem] md:text-[1.5rem] mx-[2%] justify-self-center mb-[2%] p-[1%] bg-gray-200 text-green-600 rounded-full text-center">✅Login successful...redirecting to home page</p>}
+                <div className="text-center">
+                    <form className={`flex flex-col items-center text-white`} onSubmit={handleSubmit}>
+                        <p className="text-xl md:text-2xl lg:text-3xl">LOGIN</p>
 
-                        <div className="flex gap-40 justify-between">
-                            <label htmlFor="email" className="justify-self-end">Email : </label>
-                            <input onChange={handleChange} type="text" name="email" className="h-20 justify-self-start w-400 bg-white text-blue-600 rounded-full shadow-[5px_5px_15px_rgba(0,0,0,0.4)] py-20 px-10"/>
-                            {errors.email && <span className="text-red-500 col-span-2 text-center">{errors.email}</span>}
+                        <div className="flex w-[100%] py-[5%] px-[1%] relative">
+                            <label htmlFor="email" className="md:text-xl lg:text-2xl">Email : </label>
+                            <input onChange={handleChange} type="text" name="email" className="h-fit w-[75%] p-[1%] bg-white text-blue-600 rounded-full shadow-[5px_5px_15px_rgba(0,0,0,0.4)] absolute right-[1%]"/>
+                            {errors.email && <span className="text-red-500 text-center">{errors.email}</span>}
                         </div>
 
-                        <div className="flex gap-40 justify-between">
-                            <label htmlFor="passwd" className="justify-self-end">Password :</label>
-                            <input onChange={handleChange} type="password" name="password" className="h-20 w-400 justify-self-start w-150 bg-white text-blue-600 rounded-full shadow-[5px_5px_15px_rgba(0,0,0,0.4)] py-20 px-10"/>
-                            {errors.password && <span className="text-red-500 col-span-2 text-center">{errors.password}</span>}
+                        <div className="flex w-[100%] py-[5%] px-[1%] relative">
+                            <label htmlFor="passwd" className="md:text-xl lg:text-2xl">Password :</label>
+                            <input onChange={handleChange} type="password" name="password" className="h-fit w-[75%] p-[1%] bg-white text-blue-600 rounded-full shadow-[5px_5px_15px_rgba(0,0,0,0.4)] absolute right-[1%]"/>
+                            {errors.password && <span className="text-red-500 text-center">{errors.password}</span>}
                         </div>
                         
                         {/* <p className="text-white">Forgot password?</p> */}
-                        <button className="text-blue-600 bg-gray-100 size-fit px-20 py-10 justify-self-center relative left-[40%] mb-40 cursor-pointer shadow-[5px_5px_20px_rgba(0,0,0,1)]">Submit</button>
+                        <button className="text-blue-600 p-[1%] my-[5%] bg-gray-100 size-fit cursor-pointer shadow-[5px_5px_20px_rgba(0,0,0,1)]">Submit</button>
                     </form>
                     <p className="text-white">New User? <Link to="/signup" className="underline text-[rgb(255,68,0)]">Sign Up</Link></p>
                 </div>

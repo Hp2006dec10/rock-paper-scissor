@@ -60,36 +60,40 @@ const Signup = () => {
   },[message]);
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <h1 className="w-screen text-white h-100 text-left bg-gradient-to-r from-[rgb(16,187,230)] from-10% via-[rgb(26,207,200)] via-50% to-[rgb(36,227,190)] to-90% pl-20 pt-25 text-4xl">Rock Paper Scissor</h1>
       {message && <p className="text-2xl justify-self-center mt-50 p-10 bg-green-200 text-green-600 rounded-[10px]">✅Signup successful...redirecting to login</p>}
-      <form className={`${message ? "pt-50" : "pt-100"} relative -left-150`} onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-40 text-2xl relative">
-          <label htmlFor="name" className="text-right pr-30">Name : </label>
-          <input type="text" name="name" className="bg-[rgb(226,216,216)] text-left w-500 shadow-xl px-10 py-[2.5]" value={formData.name} onChange={handleChange}/>
-          {errors.name && <span className="text-red-500 col-span-2 text-center">{errors.name}</span>}
+      <div className="flex-grow flex flex-col justify-evenly">
+        <form className="w-[100%] md:w-[75%] lg:w-[65%] mx-auto flex flex-col items-center p-[1%] gap-40 md:gap-20 md:text-2xl lg:text-3xl" onSubmit={handleSubmit}>
+          <div className="relative w-[100%] justify-between p-[2%]">
+            <label htmlFor="name" className="text-right">Name : </label>
+            <input type="text" name="name" className="bg-[rgb(226,216,216)] shadow-xl px-10 py-[2.5] absolute right-0 w-[50%]" value={formData.name} onChange={handleChange}/>
+            {errors.name && <span className="text-red-500 text-center">{errors.name}</span>}
+          </div>
+          <div className="relative w-[100%] flex justify-between p-[2%]">
+            <label htmlFor="email" className="text-right">Email : </label>
+            <input name="email" type="text" className="bg-[rgb(226,216,216)] shadow-xl px-10 py-[2.5] absolute right-0 w-[50%]" value={formData.email} onChange={handleChange}/>
+            {errors.email && <span className="text-red-500 text-center">{errors.email}</span>}
+          </div>
+          <div className="relative w-[100%] flex justify-between p-[2%]">
+            <label htmlFor="number" className="text-right">Phone Number :</label>
+            <input name="phone" type="text" className="bg-[rgb(226,216,216)] shadow-xl px-10 py-[2.5] absolute right-0 w-[50%]" value={formData.phone} onChange={handleChange}/>
+            {errors.phone && <span className="text-red-500 text-center">{errors.phone}</span>}
+          </div>
+          <div className="relative w-[100%] flex justify-between p-[2%]">
+            <label htmlFor="password" className="text-right">Password :</label>
+            <input name="password" type="password" className="bg-[rgb(226,216,216)] shadow-xl px-10 py-[2.5] absolute right-0 w-[50%]" value={formData.password} onChange={handleChange}/>
+          </div>
+          <div className="relative w-[100%] flex justify-between p-[2%]">
+            <label htmlFor="cnfrmpassword" className="text-right">Confirm Password :</label>
+            <input name="cnfrmpassword" type="password" className="bg-[rgb(226,216,216)] shadow-xl px-10 py-[2.5] absolute right-0 w-[50%]" value={formData.cnfrmpassword} onChange={handleChange} />
+            {errors.password && <span className="text-red-500 text-center">{errors.password}</span>}
+          </div>
 
-          <label htmlFor="email" className="text-right pr-30">Email : </label>
-          <input name="email" type="text" className="bg-[rgb(226,216,216)] text-left w-500 shadow-xl px-10 py-[2.5]" value={formData.email} onChange={handleChange}/>
-          {errors.email && <span className="text-red-500 col-span-2 text-center">{errors.email}</span>}
-
-          <label htmlFor="number" className="text-right pr-30">Phone Number :</label>
-          <input name="phone" type="text" className="bg-[rgb(226,216,216)] text-left w-500 shadow-xl px-10 py-[2.5]" value={formData.phone} onChange={handleChange}/>
-          {errors.phone && <span className="text-red-500 col-span-2 text-center">{errors.phone}</span>}
-
-          <label htmlFor="password" className="text-right pr-30">Password :</label>
-          <input name="password" type="password" className="bg-[rgb(226,216,216)] text-left w-500 shadow-xl px-10 py-[2.5]" value={formData.password} onChange={handleChange}/>
-
-          <label htmlFor="cnfrmpassword" className="text-right pr-30">Confirm Password :</label>
-          <input name="cnfrmpassword" type="password" className="bg-[rgb(226,216,216)] text-left w-500 shadow-xl px-10 py-[2.5]" value={formData.cnfrmpassword} onChange={handleChange} />
-          {errors.password && <span className="text-red-500 col-span-2 text-center">{errors.password}</span>}
-        </div>
-
-        <div className="grid grid-cols-2 gap-40 text-2xl mt-100 ml-100">
           <button type="submit" className="bg-blue-300 col-span-2 w-fit justify-self-center border-black border-2 px-20 py-10 cursor-pointer">Submit</button>
-        </div>
 
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

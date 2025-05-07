@@ -19,12 +19,13 @@ const Menu = ({token}) => {
       }
   }
   return (
-    <div className="justify-self-center mt-150">
-        <Link to="/game"><div className='h-75 w-200 bg-[rgb(101,70,92)] -outline-offset-10 outline-3 outline-white m-40 flex items-center justify-center text-3xl text-white cursor-pointer'>Play</div></Link>
-        {!token && <Link to="/login"><div className='h-75 w-200 bg-[rgb(101,70,92)] -outline-offset-10 outline-3 outline-white m-40 flex items-center justify-center text-3xl text-white cursor-pointer'>Login</div></Link>}
+    <div className="justify-self-center relative right-[5%] mt-150 md:mt-[20%] lg:mt-[10%]">
+        <Link to="/game"><div className='px-[100%] py-[25%] bg-[rgb(101,70,92)] -outline-offset-10 outline-3 outline-white m-auto flex items-center justify-center text-2xl md:text-3xl text-white cursor-pointer'>Play</div></Link>
+        
+        {!token && <Link to="/login"><div className='px-[100%] py-[25%] bg-[rgb(101,70,92)] -outline-offset-10 outline-3 outline-white mx-auto my-[40%] flex items-center justify-center text-2xl md:text-3xl text-white cursor-pointer'>Login</div></Link>}
         {token &&
         <>
-        <div onClick={handleLogOut} className='h-75 w-200 bg-[rgb(101,70,92)] -outline-offset-10 outline-3 outline-white m-40 flex items-center justify-center text-3xl text-white cursor-pointer'>Logout</div>
+        <div onClick={handleLogOut} className='px-[100%] py-[25%] bg-[rgb(101,70,92)] -outline-offset-10 outline-3 outline-white mx-auto my-[20%] flex items-center justify-center text-2xl md:text-3xl text-white cursor-pointer'>Logout</div>
         </>}
       </div>
   )
@@ -41,7 +42,7 @@ function LandingPage(){
 
   return(
     <div className='bg-gradient-to-r from-black from-10% via-[rgb(28,22,27)] via-50% to-black to-90% h-screen w-screen'>
-      <div className='text-[75px] text-white text-center pt-50'>ROCK PAPER SCISSOR</div>
+      <div className='text-[30px] md:text-[60px] lg:text-[75px] text-white text-center pt-50'>ROCK PAPER SCISSOR</div>
       <Menu token={token}/>
       <div className='absolute left-20 bottom-20'>
       </div>
