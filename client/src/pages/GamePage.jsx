@@ -5,7 +5,7 @@ import api from "./axios";
 
 const ScoreBoard = ({hScore, cScore}) => {
     return (
-        <div className="w-[80%] py-[2.5%] mx-auto md:py-[0.5%] px-[2%] bg-black text-white shadow-[inset_4px_4px_20px_rgba(0,81,255,0.25)]">        
+        <div className="w-[80%] py-[2.5%] mx-auto md:py-[0.5%] px-[2%] bg-black text-white shadow-[4px_4px_20px_rgba(0,81,255,0.25)] shadow-[4px_0_10px_rgb(255,255,0)]">        
             <div className="flex justify-evenly py-[1%] text-xl">
                 <div className="text-center">
                 <p className="text-xl lg:text-2xl">Computer</p>
@@ -23,7 +23,7 @@ const ScoreBoard = ({hScore, cScore}) => {
 
 const HumanBoard = ({humanInput}) => {
     return (
-        <div className="size-100 md:size-180 bg-white">
+        <div className="size-100 md:size-180 bg-[rgba(255,255,255,0.1)] border-1 border-[rgb(255,255,255,0.2)] shadow-[0px_8px_40px_rgba(255,255,255,0.1)]">
             {humanInput && <img src={`images/${humanInput}.jpg`} className="h-[100%] w-[100%]"/>}
         </div>
     )
@@ -31,7 +31,7 @@ const HumanBoard = ({humanInput}) => {
 
 const ComputerBoard = ({values,doesStart, current}) => {    
     return (
-        <div className="size-100 md:size-180 bg-white">
+        <div className="size-100 md:size-180 bg-[rgba(255,255,255,0.1)] border-1 border-[rgb(255,255,255,0.2)] shadow-[0px_8px_40px_rgba(255,255,255,0.1)]">
             {doesStart && <img src={`images/${values[current]}.jpg`} className="h-[100%] w-[100%]"/>}
         </div>
     )
@@ -40,9 +40,9 @@ const ComputerBoard = ({values,doesStart, current}) => {
 const ChoiceBox = ({handleClick, shouldDisable}) => {
     return (
         <div className={`flex mx-auto flex-col gap-10 items-center md:flex-row justify-evenly ${shouldDisable ? "pointer-events-none opacity-50 grayscale cursor-not-allowed":""} w-[100%] md:w-[65%] lg:w-[55%]`}>
-            <div className="px-[10%] md:py-[1%] bg-black flex h-fit w-[40%] md:w-[20%] rounded-full text-2xl lg:text-3xl justify-center items-center text-white cursor-pointer shadow-[2px_2px_4px_rgb(30,28,28)] md:shadow-[5px_7.5px_4px_rgb(30,28,28)] relative active:left-[5px] active:top-[7.5px] active:shadow-none"  onClick={()=>handleClick(0)}>Rock</div>
-            <div className="px-[10%] md:py-[1%] bg-black flex h-fit w-[40%] md:w-[20%] rounded-full text-2xl lg:text-3xl justify-center items-center text-white cursor-pointer shadow-[2px_2px_4px_rgb(30,28,28)] md:shadow-[5px_7.5px_4px_rgb(30,28,28)] relative active:left-[5px] active:top-[7.5px] active:shadow-none" onClick={()=>handleClick(1)}>Paper</div>
-            <div className="px-[10%] md:py-[1%] bg-black flex h-fit w-[40%] md:w-[20%] rounded-full text-2xl lg:text-3xl justify-center items-center text-white cursor-pointer shadow-[2px_2px_4px_rgb(30,28,28)] md:shadow-[5px_7.5px_4px_rgb(30,28,28)] relative active:left-[5px] active:top-[7.5px] active:shadow-none" onClick={()=>handleClick(2)}>Scissor</div>
+            <div className="px-[10%] md:py-[1%] bg-black flex h-fit w-[40%] md:w-[20%] rounded-full text-2xl lg:text-3xl justify-center items-center text-white cursor-pointer shadow-[2px_2px_4px_rgb(30,28,28)] md:shadow-[0px_7.5px_0px_rgb(30,28,28)] relative active:top-[7.5px] active:shadow-none"  onClick={()=>handleClick(0)}>Rock</div>
+            <div className="px-[10%] md:py-[1%] bg-black flex h-fit w-[40%] md:w-[20%] rounded-full text-2xl lg:text-3xl justify-center items-center text-white cursor-pointer shadow-[2px_2px_4px_rgb(30,28,28)] md:shadow-[0px_7.5px_0px_rgb(30,28,28)] relative active:top-[7.5px] active:shadow-none" onClick={()=>handleClick(1)}>Paper</div>
+            <div className="px-[10%] md:py-[1%] bg-black flex h-fit w-[40%] md:w-[20%] rounded-full text-2xl lg:text-3xl justify-center items-center text-white cursor-pointer shadow-[2px_2px_4px_rgb(30,28,28)] md:shadow-[0px_7.5px_0px_rgb(30,28,28)] relative active:top-[7.5px] active:shadow-none" onClick={()=>handleClick(2)}>Scissor</div>
         </div>
     )
 }
@@ -74,7 +74,7 @@ const Back = ({handleExit, checkExit, endGame}) => {
 const MessageBox = ({message}) => {
     return (
         <div className="text-center text-xl md:text-2xl lg:text-3xl ">
-            <div className="text-[rgb(141,255,179)]">First to 10 points will win</div>
+            <div className="text-[rgb(141,255,179)] py-20">FIRST TO 10 POINTS WILL WIN</div>
             <div className=" text-[rgb(254,245,151)]">{message}</div>
         </div>
     )
@@ -202,7 +202,7 @@ const GamePage = () => {
     const handleForceExit = () => {checkExit(true);endGame(true)};
     return (
     <>
-   <div className={`flex flex-col w-[100%] justify-evenly bg-[rgb(6,0,48)]  h-screen ${gameOver ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}>
+   <div className={`flex flex-col w-[100%] justify-evenly bg-[rgb(8,0,52)]  h-screen ${gameOver ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}>
    <div className='text-[30px] md:text-[50px] text-white text-center text-shadow-small'>ROCK PAPER SCISSOR</div>
         <ScoreBoard hScore={humanScore} cScore={computerScore}/>
         <MessageBox message={message}/>
