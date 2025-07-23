@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+
+@theme{
+  --spacing: 1px;
+}
+
+.text-shadow {
+  text-shadow: 5px 5px 2px rgba(218, 53, 244, 0.5);
+}
+.text-shadow-small{
+  text-shadow: 2px 2px 2px rgba(218, 53, 244, 0.5);
+}
+.box-shadow{
+  box-shadow: 5px 5px 20px rgb(255, 255, 255);
+}
