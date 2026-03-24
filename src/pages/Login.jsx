@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router";
 import {jwtDecode} from "jwt-decode";
 import api from "./axios";
 
@@ -12,12 +12,11 @@ const LoginPage = () => {
     const [message, setMessage] = useState(null);
     const [errors,setErrors] = useState({});
     const navigate = useNavigate();
-    const location = useLocation();
 
-    const from = location.state?.from?.pathname || "/";
     const handleChange = (e) => {
         changeData({...formData,[e.target.name]: e.target.value});
     };
+
     const validateForm = () =>{
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -83,7 +82,7 @@ const LoginPage = () => {
                         </div>
                         
                         {/* <p className="text-white">Forgot password?</p> */}
-                        <button className="text-blue-600 p-[1%] my-[5%] bg-gray-100 size-fit cursor-pointer shadow-[5px_5px_20px_rgba(0,0,0,1)]">Submit</button>
+                        <button type="submit" className="text-blue-600 p-[1%] my-[5%] bg-gray-100 size-fit cursor-pointer shadow-[5px_5px_20px_rgba(0,0,0,1)]">Submit</button>
                     </form>
                     <p className="text-white">New User? <Link to="/signup" className="underline text-[rgb(255,68,0)]">Sign Up</Link></p>
                 </div>

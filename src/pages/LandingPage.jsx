@@ -20,13 +20,13 @@ const Menu = ({token}) => {
   }
   return (
     <div className="justify-self-center relative right-[5%] mt-150 md:mt-[20%] lg:mt-[10%]">
-        <Link to="/game"><div className='px-[100%] py-[25%] bg-[rgb(101,70,92)]  m-auto flex items-center justify-center text-2xl md:text-3xl text-white rounded-[10px] relative hover:px-[120%] hover:-left-[10%] hover:py-[30%] hover:rounded-[0px] cursor-pointer hover:shadow-[0_0_10px_rgba(255,255,255,0.5)]'>Play</div></Link>
+        <Link to="/game"><div className='glass glass-hover px-25 py-10 m-auto flex items-center justify-center text-2xl md:text-3xl text-white rounded-[10px] relative cursor-pointer'>Play</div></Link>
         
-        {!token && <Link to="/login"><div className='px-[100%] py-[25%] bg-[rgb(101,70,92)]  mx-auto my-[40%] flex items-center justify-center text-2xl md:text-3xl text-white cursor-pointer rounded-[10px] relative hover:px-[115%] hover:-left-[10%] hover:py-[30%] hover:rounded-[0px] hover:shadow-[0_0_10px_rgba(255,255,255,0.5)]'>Login</div></Link>}
+        {!token && <Link to="/login"><div className='glass glass-hover px-25 py-10 mx-auto my-[40%] flex items-center justify-center text-2xl md:text-3xl text-white cursor-pointer rounded-[10px] relative'>Login</div></Link>}
         {token &&
-        <>
-        <div onClick={handleLogOut} className='px-[100%] py-[25%] bg-[rgb(101,70,92)]  mx-auto my-[20%] flex items-center justify-center text-2xl md:text-3xl text-white cursor-pointer relative rounded-[10px] hover:px-[115%] hover:-left-[10%] hover:py-[30%] hover:shadow-[0_0_10px_rgba(255,255,255,0.5)]'>Logout</div>
-        </>}
+        <div>
+          <div onClick={handleLogOut} className=' glass glass-hover px-25 py-10 mx-auto my-[20%] flex items-center justify-center text-2xl md:text-3xl text-white cursor-pointer relative rounded-[10px]'>Logout</div>
+        </div>}
       </div>
   )
 }
@@ -41,10 +41,14 @@ function LandingPage(){
   }, []);
 
   return(
-    <div className='bg-gradient-to-r from-black from-10% via-[rgb(28,22,27)] via-50% to-black to-90% h-screen w-screen'>
-      <div className='text-[30px] md:text-[60px] lg:text-[100px] text-white text-center pt-50 text-shadow'>ROCK PAPER SCISSOR</div>
-      <Menu token={token}/>
-      <div className='absolute left-20 bottom-20'>
+    <div className='bg-black h-screen w-screen'>
+      <div className="fixed inset-0 z-0">
+        <div className="absolute top-0 left-0 size-300 md:size-500 bg-purple-500/10 rounded-full blur-3xl float-animation"></div>
+        <div className="absolute bottom-0 right-0 size-300 md:size-500 bg-blue-500/10 rounded-full blur-3xl float-animation" style={{animationDelay: "1.5s"}}></div>
+      </div>
+      <div className="z-10">
+        <div className='text-[30px] md:text-[60px] lg:text-[100px] text-white text-center pt-50'>Rock Paper Scissor</div>
+        <Menu token={token}/>
       </div>
     </div>
   )

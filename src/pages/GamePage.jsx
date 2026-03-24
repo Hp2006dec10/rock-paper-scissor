@@ -5,16 +5,16 @@ import api from "./axios";
 
 const ScoreBoard = ({hScore, cScore}) => {
     return (
-        <div className="w-[80%] py-[2.5%] mx-auto md:py-[0.5%] px-[2%] bg-black text-white shadow-[4px_4px_20px_rgba(0,81,255,0.25)] shadow-[4px_0_10px_rgb(255,255,0)]">        
+        <div className="glass w-[80%] max-w-[800px] py-[2.5%] mx-auto md:py-[0.5%] px-[2%] text-white rounded-md">        
             <div className="flex justify-evenly py-[1%] text-xl">
                 <div className="text-center">
-                <p className="text-xl lg:text-2xl">Computer</p>
-                <p className="text-2xl lg:text-4xl">{cScore}</p>
+                    <p className="text-xl lg:text-2xl">Player</p>
+                    <p className="text-2xl lg:text-4xl">{hScore}</p>
                 </div>
-                <div className="text-[30px] md:text-[50px] my-auto hidden md:block">SCORE </div>
+                <div className="text-[20px] md:text-[40px] my-auto hidden md:block">SCORE </div>
                 <div className="text-center">
-                <p className="text-xl lg:text-2xl">Player</p>
-                <p className="text-2xl lg:text-4xl">{hScore}</p>
+                    <p className="text-xl lg:text-2xl">Computer</p>
+                    <p className="text-2xl lg:text-4xl">{cScore}</p>
                 </div>
             </div>
         </div>
@@ -39,10 +39,10 @@ const ComputerBoard = ({values,doesStart, current}) => {
 
 const ChoiceBox = ({handleClick, shouldDisable}) => {
     return (
-        <div className={`flex mx-auto flex-col gap-10 items-center md:flex-row justify-evenly ${shouldDisable ? "pointer-events-none opacity-50 grayscale cursor-not-allowed":""} w-[100%] md:w-[65%] lg:w-[55%]`}>
-            <div className="px-[10%] md:py-[1%] bg-black flex h-fit w-[40%] md:w-[20%] rounded-full text-2xl lg:text-3xl justify-center items-center text-white cursor-pointer shadow-[2px_2px_4px_rgb(30,28,28)] md:shadow-[0px_7.5px_0px_rgb(30,28,28)] relative active:top-[7.5px] active:shadow-none"  onClick={()=>handleClick(0)}>Rock</div>
-            <div className="px-[10%] md:py-[1%] bg-black flex h-fit w-[40%] md:w-[20%] rounded-full text-2xl lg:text-3xl justify-center items-center text-white cursor-pointer shadow-[2px_2px_4px_rgb(30,28,28)] md:shadow-[0px_7.5px_0px_rgb(30,28,28)] relative active:top-[7.5px] active:shadow-none" onClick={()=>handleClick(1)}>Paper</div>
-            <div className="px-[10%] md:py-[1%] bg-black flex h-fit w-[40%] md:w-[20%] rounded-full text-2xl lg:text-3xl justify-center items-center text-white cursor-pointer shadow-[2px_2px_4px_rgb(30,28,28)] md:shadow-[0px_7.5px_0px_rgb(30,28,28)] relative active:top-[7.5px] active:shadow-none" onClick={()=>handleClick(2)}>Scissor</div>
+        <div className={`flex mx-auto gap-10 items-center md:flex-row justify-evenly ${shouldDisable ? "pointer-events-none opacity-50 grayscale cursor-not-allowed":""} w-[100%] md:w-[65%] lg:w-[55%]`}>
+            <div className="glass glass-hover px-[10%] md:py-[1%] flex h-fit w-[40%] md:w-[20%] rounded-full text-xl lg:text-3xl justify-center items-center text-white cursor-pointer relative"  onClick={()=>handleClick(0)}>Rock</div>
+            <div className="glass glass-hover px-[10%] md:py-[1%] flex h-fit w-[40%] md:w-[20%] rounded-full text-xl lg:text-3xl justify-center items-center text-white cursor-pointer relative" onClick={()=>handleClick(1)}>Paper</div>
+            <div className="glass glass-hover px-[10%] md:py-[1%] flex h-fit w-[40%] md:w-[20%] rounded-full text-xl lg:text-3xl justify-center items-center text-white cursor-pointer relative" onClick={()=>handleClick(2)}>Scissor</div>
         </div>
     )
 }
@@ -202,19 +202,25 @@ const GamePage = () => {
     const handleForceExit = () => {checkExit(true);endGame(true)};
     return (
     <>
-   <div className={`flex flex-col w-[100%] justify-evenly bg-[rgb(8,0,52)]  h-screen ${gameOver ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}>
-   <div className='text-[30px] md:text-[50px] text-white text-center text-shadow-small'>ROCK PAPER SCISSOR</div>
-        <ScoreBoard hScore={humanScore} cScore={computerScore}/>
-        <MessageBox message={message}/>
-        <div className="flex justify-evenly h-fit w-[100%] py-[1%]">
-            <ComputerBoard values={arr} doesStart={computerStart} current={currInpInd}/>
-            <HumanBoard humanInput={humanInput}/>
+        <div className="fixed inset-0 z-0">
+            <div className="absolute top-0 left-0 size-300 md:size-500 bg-purple-500/10 rounded-full blur-3xl float-animation"></div>
+            <div className="absolute bottom-0 right-0 size-300 md:size-500 bg-blue-500/10 rounded-full blur-3xl float-animation" style={{animationDelay: "1.5s"}}></div>
         </div>
-        <ChoiceBox handleClick={handleHumanInput} shouldDisable={computerStart}/>
-        <div className="w-fit h-fit px-[5%] py-[3%] md:py-[1%] bg-black text-center text-xl md:text-3xl text-white cursor-pointer relative left-[67.5%] md:left-[75%] lg:left-[80%] my-[2%]" onClick={handleForceExit}><i className="fas fa-arrow-left text-white"></i>Back</div>
-    </div>
-    {gameOver && <GameOver winner={winner} handleExit={handleForceExit} handleRestart={handleRestart}/>}
-    {forceExit && <Back handleExit={handleExit} checkExit={checkExit} endGame={endGame}/>}
+        <div className={`flex flex-col w-[100%] justify-evenly bg-black h-screen ${gameOver ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}>
+            <div className='text-[30px] md:text-[50px] text-white text-center text-shadow-small'>ROCK PAPER SCISSOR</div>
+            <ScoreBoard hScore={humanScore} cScore={computerScore}/>
+            <MessageBox message={message}/>
+            <div className="flex justify-evenly h-fit w-[100%] py-[1%]">
+                <HumanBoard humanInput={humanInput}/>
+                <ComputerBoard values={arr} doesStart={computerStart} current={currInpInd}/>
+            </div>
+            <ChoiceBox handleClick={handleHumanInput} shouldDisable={computerStart}/>
+            <div className="glass glass-hover w-fit h-fit px-[5%] py-[3%] md:py-[1%] text-center text-xl md:text-3xl text-white cursor-pointer relative left-[67.5%] md:left-[75%] lg:left-[80%] my-[2%]" onClick={handleForceExit}>
+               Back
+            </div>
+        </div>
+        {gameOver && <GameOver winner={winner} handleExit={handleForceExit} handleRestart={handleRestart}/>}
+        {forceExit && <Back handleExit={handleExit} checkExit={checkExit} endGame={endGame}/>}
     </>
     )
 }
