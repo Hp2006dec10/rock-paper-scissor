@@ -75,7 +75,7 @@ const Signup = () => {
       {/*<div className="bg-black ">
         
       </div>*/}
-      <div className="relative flex items-center justify-center px-4 py-4 bg-black h-screen w-screen overflow-hidden">
+      <div className="relative flex items-center justify-center px-4 py-4 bg-black h-[100dvh] w-screen overflow-hidden">
         <div className="fixed inset-0 z-0">
           <div className="absolute top-0 left-0 size-200 md:size-500 bg-purple-500/10 rounded-full blur-3xl float-animation"></div>
           <div

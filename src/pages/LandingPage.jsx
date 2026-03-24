@@ -123,7 +123,7 @@ function LandingPage() {
   }, []);
 
   return (
-    <div className="bg-black h-screen w-screen overflow-hidden">
+    <div className="bg-black h-[100dvh] w-screen overflow-hidden">
       <div className="fixed inset-0 z-0">
         <div className="absolute top-0 left-0 size-300 md:size-500 bg-purple-500/10 rounded-full blur-3xl float-animation"></div>
         <div

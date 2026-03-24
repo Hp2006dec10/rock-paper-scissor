@@ -286,7 +286,7 @@ const GamePage = () => {
   return (
     <>
       <div
-        className={`relative flex flex-col w-full bg-black justify-evenly h-screen overflow-hidden px-2 md:px-4 ${gameOver || forceExit ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}
+        className={`relative flex flex-col w-full bg-black justify-evenly h-[100dvh] overflow-hidden px-2 md:px-4 ${gameOver || forceExit ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="absolute top-0 left-0 size-300 md:size-500 bg-purple-500/10 rounded-full blur-3xl float-animation"></div>
         <div
