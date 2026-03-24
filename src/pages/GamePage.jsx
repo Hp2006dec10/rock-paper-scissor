@@ -1,228 +1,338 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
 import api from "./axios";
 
-const ScoreBoard = ({hScore, cScore}) => {
-    return (
-        <div className="glass w-[80%] max-w-[800px] py-[2.5%] mx-auto md:py-[0.5%] px-[2%] text-white rounded-md">        
-            <div className="flex justify-evenly py-[1%] text-xl">
-                <div className="text-center">
-                    <p className="text-xl lg:text-2xl">Player</p>
-                    <p className="text-2xl lg:text-4xl">{hScore}</p>
-                </div>
-                <div className="text-[20px] md:text-[40px] my-auto hidden md:block">SCORE </div>
-                <div className="text-center">
-                    <p className="text-xl lg:text-2xl">Computer</p>
-                    <p className="text-2xl lg:text-4xl">{cScore}</p>
-                </div>
-            </div>
-        </div>
-    )
-}
+const MODE_CONFIG = {
+  classic_5: { type: "classic", scoreToWin: 5, label: "Classic - 5 points" },
+  classic_10: { type: "classic", scoreToWin: 10, label: "Classic - 10 points" },
+  classic_20: { type: "classic", scoreToWin: 20, label: "Classic - 20 points" },
+  sd_120: { type: "suddenDeath", duration: 120, label: "Sudden Death - 2 minutes" },
+  sd_300: { type: "suddenDeath", duration: 300, label: "Sudden Death - 5 minutes" },
+};
 
-const HumanBoard = ({humanInput}) => {
-    return (
-        <div className="size-100 md:size-180 bg-[rgba(255,255,255,0.1)] border-1 border-[rgb(255,255,255,0.2)] shadow-[0px_8px_40px_rgba(255,255,255,0.1)]">
-            {humanInput && <img src={`images/${humanInput}.jpg`} className="h-[100%] w-[100%]"/>}
+const ScoreBoard = ({ hScore, cScore, timerText }) => {
+  return (
+    <div className="glass w-[85%] max-w-[600px] py-3 mx-auto px-3 md:px-5 text-white rounded-xl">
+      <div className="flex justify-evenly items-center text-xl">
+        <div className="text-center">
+          <p className="text-base md:text-lg lg:text-xl">Player</p>
+          <p className="text-2xl lg:text-4xl">{hScore}</p>
         </div>
-    )
-}
+        <div className="text-[30px] my-auto hidden md:block font-semibold">SCORE </div>
+        <div className="text-center">
+          <p className="text-base md:text-lg lg:text-xl">Computer</p>
+          <p className="text-2xl lg:text-4xl">{cScore}</p>
+        </div>
+      </div>
+      {timerText && <p className="text-center pt-2 text-sm md:text-base">{timerText}</p>}
+    </div>
+  );
+};
 
-const ComputerBoard = ({values,doesStart, current}) => {    
-    return (
-        <div className="size-100 md:size-180 bg-[rgba(255,255,255,0.1)] border-1 border-[rgb(255,255,255,0.2)] shadow-[0px_8px_40px_rgba(255,255,255,0.1)]">
-            {doesStart && <img src={`images/${values[current]}.jpg`} className="h-[100%] w-[100%]"/>}
-        </div>
-    )
-}
+const HumanBoard = ({ humanInput }) => {
+  return (
+    <div className="size-100 sm:size-125 md:size-150 glass-purple-light rounded-lg overflow-hidden">
+      {humanInput && <img src={`images/${humanInput}.jpg`} className="h-full w-full" />}
+    </div>
+  );
+};
 
-const ChoiceBox = ({handleClick, shouldDisable}) => {
-    return (
-        <div className={`flex mx-auto gap-10 items-center md:flex-row justify-evenly ${shouldDisable ? "pointer-events-none opacity-50 grayscale cursor-not-allowed":""} w-[100%] md:w-[65%] lg:w-[55%]`}>
-            <div className="glass glass-hover px-[10%] md:py-[1%] flex h-fit w-[40%] md:w-[20%] rounded-full text-xl lg:text-3xl justify-center items-center text-white cursor-pointer relative"  onClick={()=>handleClick(0)}>Rock</div>
-            <div className="glass glass-hover px-[10%] md:py-[1%] flex h-fit w-[40%] md:w-[20%] rounded-full text-xl lg:text-3xl justify-center items-center text-white cursor-pointer relative" onClick={()=>handleClick(1)}>Paper</div>
-            <div className="glass glass-hover px-[10%] md:py-[1%] flex h-fit w-[40%] md:w-[20%] rounded-full text-xl lg:text-3xl justify-center items-center text-white cursor-pointer relative" onClick={()=>handleClick(2)}>Scissor</div>
-        </div>
-    )
-}
+const ComputerBoard = ({ values, doesStart, current }) => {
+  return (
+    <div className="size-100 sm:size-125 md:size-150 glass-blue-light rounded-lg overflow-hidden">
+      {doesStart && <img src={`images/${values[current]}.jpg`} className="h-full w-full" />}
+    </div>
+  );
+};
 
-const GameOver = ({winner, handleExit, handleRestart}) => {
-    return (
-        <div className="p-[4%] md:p-[2%] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[rgb(6,0,48)]">
-            <div className=" w-[100%] justify-self-center text-xl md:text-2xl lg:text-4xl text-white mb-[10%]">{winner} won</div>
-            <div className="flex justify-between gap-[10%] w-[100%] md:w-[75%] mx-auto">
-                <div className="text-center h-fit w-[70%] p-[2.5%] md:p-[1.5%] text-xl md:text-2xl border-box bg-white cursor-pointer shadow-xl" onClick={handleRestart}>Restart</div>
-                <div className="text-center h-fit w-[70%] p-[2.5%] md-p-[1.5%] text-xl md:text-2xl border-box bg-white cursor-pointer shadow-xl" onClick={handleExit}>Exit</div>
-            </div>
-        </div>
-    )
-}
+const ChoiceBox = ({ handleClick, shouldDisable }) => {
+  const baseClass =
+    "z-20 glass glass-hover px-4 sm:px-6 py-2.5 md:py-3 min-w-[75px] md:min-w-[130px] rounded-lg text-base md:text-xl lg:text-2xl text-white cursor-pointer";
+  return (
+    <div
+      className={`flex flex-wrap mx-auto gap-15 md:gap-20 items-center justify-center ${shouldDisable ? "pointer-events-none opacity-50 grayscale cursor-not-allowed" : ""} w-[95%] md:w-[65%]`}
+    >
+      <button type="button" className={baseClass} onClick={() => handleClick(0)}>
+        Rock
+      </button>
+      <button type="button" className={baseClass} onClick={() => handleClick(1)}>
+        Paper
+      </button>
+      <button type="button" className={baseClass} onClick={() => handleClick(2)}>
+        Scissor
+      </button>
+    </div>
+  );
+};
 
-const Back = ({handleExit, checkExit, endGame}) => {
-    return (
-        <div className="p-[4%] md:p-[2%] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[rgb(6,0,48)]">
-            <div className=" w-[100%] text-center text-xl md:text-2xl lg:text-4xl text-white mb-[10%]">Are you sure want to Exit?</div>
-            <div className="flex justify-between gap-[10%] w-[100%] md:w-[75%] mx-auto">
-                <div className="text-center h-fit w-[70%] p-[2.5%] text-xl md:text-2xl border-box bg-white cursor-pointer shadow-xl" onClick={handleExit}>Yes</div>
-                <div className="text-center h-fit w-[70%] p-[2.5%] text-xl md:text-2xl border-box bg-white cursor-pointer shadow-xl" onClick={()=> {checkExit(false);endGame(false)}}>No</div>
-            </div>
+const Popup = ({ title, onPrimary, onSecondary, primaryLabel, secondaryLabel }) => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black px-4">
+      <div className="fixed inset-0 z-0">
+        <div className="absolute top-0 left-0 size-300 md:size-500 bg-purple-500/10 rounded-full blur-3xl float-animation"></div>
+        <div
+          className="absolute bottom-0 right-0 size-300 md:size-500 bg-blue-500/10 rounded-full blur-3xl float-animation"
+          style={{ animationDelay: "1.5s" }}
+        ></div>
+      </div>
+      <div className="z-30 glass w-4/5 md:w-1/3 lg:w-1/5 rounded-xl px-4 py-20 text-white">
+        <p className="text-center text-xl md:text-2xl mb-5">{title}</p>
+        <div className="flex gap-15 w-9/10 mx-auto mt-25 lg:mt-40">
+          <button
+            type="button"
+            className="w-1/2 py-2.5 rounded-lg bg-white/20 hover:bg-white/30 cursor-pointer"
+            onClick={onPrimary}
+          >
+            {primaryLabel}
+          </button>
+          <button
+            type="button"
+            className="w-1/2 py-2.5 rounded-lg bg-white/20 hover:bg-white/30 cursor-pointer"
+            onClick={onSecondary}
+          >
+            {secondaryLabel}
+          </button>
         </div>
-    )   
-}
+      </div>
+    </div>
+  );
+};
 
-const MessageBox = ({message}) => {
-    return (
-        <div className="text-center text-xl md:text-2xl lg:text-3xl ">
-            <div className="text-[rgb(141,255,179)] py-20">FIRST TO 10 POINTS WILL WIN</div>
-            <div className=" text-[rgb(254,245,151)]">{message}</div>
-        </div>
-    )
-}
+const MessageBox = ({ message, showLoader }) => {
+  return (
+    <div className="text-center text-base md:text-xl lg:text-2xl text-[rgb(254,245,151)] px-4 min-h-10 flex items-center justify-center gap-2">
+      <span>{message}</span>
+      {showLoader && <span className="loading-dot" aria-hidden="true"></span>}
+    </div>
+  );
+};
 
 const GamePage = () => {
-    const arr = {0: "Rock", 1: "Paper", 2 : "Scissor"};
-    const [message,setMessage] = useState("Start");
-    const [humanInput,setHuman] = useState(null);
-    const [computerInput, setComputer] = useState(null);
-    const [computerStart, setComputerStart] = useState(false);
-    const [currInpInd,changeInpInd] = useState(0);
-    const [humanScore, updateHumanScore] = useState(0);
-    const [computerScore, updatecomputerScore] = useState(0);
-    const [isDraw, controlDraw] = useState(false);
-    const [gameOver, endGame] = useState(false);
-    const [winner, setWinner] = useState(null);
-    const [forceExit, checkExit] = useState(false);
-    const navigate = useNavigate();
-    const [scoreHistory,storeScore] = useState([]);
-    const [gameStart, setGameStart] = useState(null);
-    const [gameEnd, setGameEnd] = useState(null);
-    const [inputHistory, storeInput] = useState([]);
+  const arr = { 0: "Rock", 1: "Paper", 2: "Scissor" };
+  const navigate = useNavigate();
+  const location = useLocation();
+  const selectedMode = location.state?.mode ?? "classic_10";
+  const modeConfig = MODE_CONFIG[selectedMode] ?? MODE_CONFIG.classic_10;
 
-    useEffect(()=>{
-        if (humanInput != computerInput){
-            if (computerInput == "Scissor" && humanInput == "Rock" || 
-                computerInput == "Rock"  && humanInput == "Paper"|| 
-                computerInput == "Paper" && humanInput == "Scissor" ){
-                updateHumanScore(curr => curr + 1);
-                setMessage("You won!!!");
-            }
-            else if (computerInput == "Rock" && humanInput == "Scissor" || 
-                    computerInput == "Paper"  && humanInput == "Rock" || 
-                    computerInput == "Scissor" && humanInput == "Paper"){
-                updatecomputerScore(curr => curr + 1);
-                setMessage("Computer won!!!")
-            }
-        }
-        else if (humanInput == computerInput && humanInput != null){
-            setMessage("Draw!!!")
-            controlDraw(true);
-        }
-    },[humanInput,computerInput]);
+  const [message, setMessage] = useState("Start");
+  const [humanInput, setHuman] = useState(null);
+  const [computerInput, setComputer] = useState(null);
+  const [computerStart, setComputerStart] = useState(false);
+  const [currInpInd, changeInpInd] = useState(0);
+  const [humanScore, updateHumanScore] = useState(0);
+  const [computerScore, updatecomputerScore] = useState(0);
+  const [isDraw, controlDraw] = useState(false);
+  const [gameOver, endGame] = useState(false);
+  const [winner, setWinner] = useState(null);
+  const [forceExit, checkExit] = useState(false);
+  const [scoreHistory, storeScore] = useState([]);
+  const [gameStart, setGameStart] = useState(Date.now());
+  const [gameEnd, setGameEnd] = useState(null);
+  const [inputHistory, storeInput] = useState([]);
+  const [secondsLeft, setSecondsLeft] = useState(modeConfig.duration ?? 0);
+  const [hasStarted, setHasStarted] = useState(false);
 
-    useEffect(()=>{
-        if (humanInput && (humanScore > 0 || computerScore > 0 || isDraw)){
-            if (!isDraw) {
-                storeScore(prev => [...prev, [computerScore, humanScore]]);
-                storeInput(prev => [...prev,[computerInput, humanInput]]);
-            }
-            setTimeout(()=>{
-                setMessage("Start");
-                setHuman(null);
-                setComputer(null);
-                setComputerStart(false);
-                if (isDraw) {
-                    controlDraw(false);
-                }
-                if (humanScore === 10) {
-                    endGame(true);
-                    setWinner("You");
-                }
-                else if (computerScore === 10){
-                    endGame(true); 
-                    setWinner("Computer")
-                };
-            }, 1000);
-        }
-    }, [humanScore, computerScore, isDraw]);
+  const timerText = useMemo(() => {
+    if (modeConfig.type !== "suddenDeath") return null;
+    const minutes = Math.floor(secondsLeft / 60);
+    const seconds = String(secondsLeft % 60).padStart(2, "0");
+    return `Time Left: ${minutes}:${seconds}`;
+  }, [secondsLeft, modeConfig.type]);
 
-    useEffect(()=>{
-        if(!gameOver) setGameStart(Date.now);
-        else {
-            setGameEnd(Date().toLocaleString());
-            if (localStorage.getItem("token")) saveGame();
+  useEffect(() => {
+    if (modeConfig.type === "suddenDeath") setMessage("Start the game to start the timer!!!");
+  },[])
 
-    }},[gameOver]);
-
-    const saveGame = async () => {
-        try{
-            const user = jwtDecode(localStorage.getItem("token"));
-            const data = {email: user.email, scoreHistory, inputHistory, gameStart, gameEnd };
-            const response = await api.post('/game', data);
-            if (response.data.message) console.log(response.data.message);
-        }
-        catch(err){
-            console.log(err);
-            console.log(err.response?.data.error);
-        }
+  useEffect(() => {
+    if (humanInput !== computerInput) {
+      if (
+        (computerInput === "Scissor" && humanInput === "Rock") ||
+        (computerInput === "Rock" && humanInput === "Paper") ||
+        (computerInput === "Paper" && humanInput === "Scissor")
+      ) {
+        updateHumanScore((curr) => curr + 1);
+        setMessage("You won this round!");
+      } else if (
+        (computerInput === "Rock" && humanInput === "Scissor") ||
+        (computerInput === "Paper" && humanInput === "Rock") ||
+        (computerInput === "Scissor" && humanInput === "Paper")
+      ) {
+        updatecomputerScore((curr) => curr + 1);
+        setMessage("Computer won this round!");
+      }
+    } else if (humanInput === computerInput && humanInput !== null) {
+      setMessage("Draw!");
+      controlDraw(true);
     }
+  }, [humanInput, computerInput]);
 
-    const handleHumanInput = (data) => {
-        setMessage("Waiting for computer input...");
-        setHuman(arr[data]);
-        changeInpInd(0);
-        setComputerStart(true);
-        handleComputerInput();
-    }
-    const handleComputerInput = () => {
-        let input = setInterval(() => {
-            changeInpInd((curr) => (curr < 2 ? curr + 1 : 0));
-        }, 100);
-    
-        setTimeout(() => {
-            clearInterval(input);
-            const finalValue = Math.floor(Math.random() * 3);
-            changeInpInd(finalValue);
-            setComputer(arr[finalValue]);
-        }, 1000);
-    };
-    
-    const handleRestart = () =>{
-        endGame(false);
-        setWinner(null);
-        updateHumanScore(0);
-        updatecomputerScore(0);
+  useEffect(() => {
+    if (humanInput && (humanScore > 0 || computerScore > 0 || isDraw)) {
+      if (!isDraw) {
+        storeScore((prev) => [...prev, [computerScore, humanScore]]);
+        storeInput((prev) => [...prev, [computerInput, humanInput]]);
+      }
+      const timeout = setTimeout(() => {
         setMessage("Start");
-        storeScore([]);
-        storeInput([]);
+        setHuman(null);
+        setComputer(null);
+        setComputerStart(false);
+        if (isDraw) controlDraw(false);
+      }, 1000);
+      return () => clearTimeout(timeout);
     }
+    return undefined;
+  }, [humanScore, computerScore, isDraw, humanInput, computerInput]);
 
-    const handleExit = () => navigate("/");
-    
-    const handleForceExit = () => {checkExit(true);endGame(true)};
-    return (
+  useEffect(() => {
+    if (modeConfig.type !== "classic") return;
+    if (humanScore === modeConfig.scoreToWin) {
+      endGame(true);
+      setWinner("You");
+    } else if (computerScore === modeConfig.scoreToWin) {
+      endGame(true);
+      setWinner("Computer");
+    }
+  }, [humanScore, computerScore, modeConfig]);
+
+  useEffect(() => {
+    if (modeConfig.type !== "suddenDeath" || !hasStarted || gameOver) return;
+    const timer = setInterval(() => {
+      setSecondsLeft((curr) => {
+        if (curr <= 1) {
+          clearInterval(timer);
+          endGame(true);
+          if (humanScore > computerScore) setWinner("You");
+          else if (computerScore > humanScore) setWinner("Computer");
+          else setWinner("No one");
+          return 0;
+        }
+        return curr - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [modeConfig.type, hasStarted, gameOver, humanScore, computerScore]);
+
+  useEffect(() => {
+    if (!gameOver) return;
+    const endedAt = new Date().toLocaleString();
+    setGameEnd(endedAt);
+  }, [gameOver]);
+
+  useEffect(() => {
+    if (!gameOver || !gameEnd || !localStorage.getItem("token")) return;
+    const saveGame = async () => {
+      try {
+        const user = jwtDecode(localStorage.getItem("token"));
+        const data = { email: user.email, scoreHistory, inputHistory, gameStart, gameEnd };
+        const response = await api.post("/game", data);
+        if (response.data.message) console.log(response.data.message);
+      } catch (err) {
+        console.log(err);
+        console.log(err.response?.data.error);
+      }
+    };
+    saveGame();
+  }, [gameOver, gameEnd, scoreHistory, inputHistory, gameStart]);
+
+  const handleHumanInput = (data) => {
+    if (gameOver) return;
+    if (!hasStarted) {
+      setHasStarted(true);
+      setGameStart(Date.now());
+    }
+    setMessage("Waiting for computer input...");
+    setHuman(arr[data]);
+    changeInpInd(0);
+    setComputerStart(true);
+    handleComputerInput();
+  };
+  const handleComputerInput = () => {
+    const input = setInterval(() => {
+      changeInpInd((curr) => (curr < 2 ? curr + 1 : 0));
+    }, 100);
+
+    setTimeout(() => {
+      clearInterval(input);
+      const finalValue = Math.floor(Math.random() * 3);
+      changeInpInd(finalValue);
+      setComputer(arr[finalValue]);
+    }, 1000);
+  };
+
+  const handleRestart = () => {
+    endGame(false);
+    setWinner(null);
+    updateHumanScore(0);
+    updatecomputerScore(0);
+    setMessage("Start");
+    storeScore([]);
+    storeInput([]);
+    setHuman(null);
+    setComputer(null);
+    setComputerStart(false);
+    controlDraw(false);
+    checkExit(false);
+    setHasStarted(false);
+    setGameStart(Date.now());
+    setGameEnd(null);
+    setSecondsLeft(modeConfig.duration ?? 0);
+  };
+
+  const handleExit = () => navigate("/");
+  const handleForceExit = () => checkExit(true);
+
+  return (
     <>
-        <div className="fixed inset-0 z-0">
-            <div className="absolute top-0 left-0 size-300 md:size-500 bg-purple-500/10 rounded-full blur-3xl float-animation"></div>
-            <div className="absolute bottom-0 right-0 size-300 md:size-500 bg-blue-500/10 rounded-full blur-3xl float-animation" style={{animationDelay: "1.5s"}}></div>
+      <div
+        className={`relative flex flex-col w-full bg-black justify-evenly h-screen overflow-hidden px-2 md:px-4 ${gameOver || forceExit ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}
+      >
+        <div className="absolute top-0 left-0 size-300 md:size-500 bg-purple-500/10 rounded-full blur-3xl float-animation"></div>
+        <div
+          className="absolute bottom-0 right-0 size-300 md:size-500 bg-blue-500/10 rounded-full blur-3xl float-animation"
+          style={{ animationDelay: "1.5s" }}
+        ></div>
+        <div>
+          <p className="text-[24px] md:text-[32px] text-center font-bold bg-linear-135 from-red-500 to-blue-600 bg-clip-text text-transparent">ROCK PAPER SCISSOR</p>
+          <p className="text-center text-slate-200 text-sm md:text-base md:text-lg">{modeConfig.label}</p>
         </div>
-        <div className={`flex flex-col w-[100%] justify-evenly bg-black h-screen ${gameOver ? "pointer-events-none opacity-50 cursor-not-allowed" : ""}`}>
-            <div className='text-[30px] md:text-[50px] text-white text-center text-shadow-small'>ROCK PAPER SCISSOR</div>
-            <ScoreBoard hScore={humanScore} cScore={computerScore}/>
-            <MessageBox message={message}/>
-            <div className="flex justify-evenly h-fit w-[100%] py-[1%]">
-                <HumanBoard humanInput={humanInput}/>
-                <ComputerBoard values={arr} doesStart={computerStart} current={currInpInd}/>
-            </div>
-            <ChoiceBox handleClick={handleHumanInput} shouldDisable={computerStart}/>
-            <div className="glass glass-hover w-fit h-fit px-[5%] py-[3%] md:py-[1%] text-center text-xl md:text-3xl text-white cursor-pointer relative left-[67.5%] md:left-[75%] lg:left-[80%] my-[2%]" onClick={handleForceExit}>
-               Back
-            </div>
+        <ScoreBoard hScore={humanScore} cScore={computerScore} timerText={timerText} />
+        <MessageBox message={message} showLoader={message.toLowerCase().includes("waiting")} />
+        <div className="flex justify-evenly h-fit w-full md:w-4/5 mx-auto py-1">
+          <HumanBoard humanInput={humanInput} />
+          <ComputerBoard values={arr} doesStart={computerStart} current={currInpInd} />
         </div>
-        {gameOver && <GameOver winner={winner} handleExit={handleForceExit} handleRestart={handleRestart}/>}
-        {forceExit && <Back handleExit={handleExit} checkExit={checkExit} endGame={endGame}/>}
+        <ChoiceBox handleClick={handleHumanInput} shouldDisable={computerStart || (gameOver && !forceExit)} />
+        <div className="w-9/10 md:w-1/2 flex justify-end mx-auto z-20">
+            <button
+            className="glass glass-hover w-fit h-fit px-6 py-2 md:py-2.5 text-center md:text-xl text-white cursor-pointer rounded-sm"
+            onClick={handleForceExit}
+            >
+                Back
+            </button>
+        </div>
+      </div>
+      {gameOver && !forceExit && (
+        <Popup
+          title={winner === "No one" ? "Time up! It's a draw." : `${winner} won`}
+          onPrimary={handleRestart}
+          onSecondary={handleExit}
+          primaryLabel="Restart"
+          secondaryLabel="Exit"
+        />
+      )}
+      {forceExit && (
+        <Popup
+          title="Are you sure you want to exit?"
+          onPrimary={handleExit}
+          onSecondary={() => checkExit(false)}
+          primaryLabel="Yes"
+          secondaryLabel="No"
+        />
+      )}
     </>
-    )
-}
+  );
+};
 
 export default GamePage;
