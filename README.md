@@ -19,16 +19,10 @@ A responsive **Rock Paper Scissors** game built using the **MERN stack (MongoDB,
 
 **Frontend**
 - React.js (with Hooks)
-- CSS (or Tailwind/Bootstrap if applicable)
+- Tailwind CSS
 
-**Backend**
-- Node.js
-- Express.js
-
-**Database**
-- MongoDB (with Mongoose)
-
-**Authentication**
-- JWT (JSON Web Tokens) for secure auth
+**Animation**
+- Framer Motion
+- Three.js
 
 ---

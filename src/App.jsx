@@ -1,13 +1,13 @@
 import routes from './routeConfig';
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import GlitterTrail from './components/GlitterTrail';
+import TorchEffect from './components/TorchEffect';
 
 const router = createBrowserRouter(routes);
 
 function App() {
   return (
     <>
-      <GlitterTrail />
+      <TorchEffect />
       <RouterProvider router={router} />
     </>
   );
